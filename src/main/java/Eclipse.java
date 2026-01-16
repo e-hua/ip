@@ -27,8 +27,9 @@ public class Eclipse {
         printIndentedLine(horizontalLine);
     }
 
-    public static void echo(String[] args) {
-        String aggregateCommand = Arrays.stream(args).reduce("", (a, b) -> a + " " + b);
-        printIndentedLine(aggregateCommand);
+    public static void echo(String command) {
+        printIndentedLine(horizontalLine);
+        printIndentedLine(command);
+        printIndentedLine(horizontalLine);
     }
 }
