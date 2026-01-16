@@ -23,12 +23,14 @@ public class Eclipse {
         printIndentedLine("Hello! I'm " + Eclipse.name);
         printIndentedLine("What can I do for you?");
         printIndentedLine(horizontalLine);
+        System.out.println();
     }
 
     public static void exit() {
         printIndentedLine(horizontalLine);
         printIndentedLine("Bye. Hope to see you again soon!");
         printIndentedLine(horizontalLine);
+        System.out.println();
     }
 
     public static void add(String item) {
@@ -36,6 +38,7 @@ public class Eclipse {
         items.add(item);
         printIndentedLine("added: " + item);
         printIndentedLine(horizontalLine);
+        System.out.println();
     }
 
     public static void list() {
@@ -46,5 +49,6 @@ public class Eclipse {
             printIndentedLine(formattedEntry);
         }
         printIndentedLine(horizontalLine);
+        System.out.println();
     }
 }
