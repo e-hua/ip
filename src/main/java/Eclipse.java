@@ -17,6 +17,11 @@ public class Eclipse {
         printIndentedLine("Hello! I'm " + Eclipse.name);
         printIndentedLine("What can I do for you?");
         printIndentedLine(horizontalLine);
+    }
 
+    public static void exit() {
+        printIndentedLine(horizontalLine);
+        printIndentedLine("Bye. Hope to see you again soon!");
+        printIndentedLine(horizontalLine);
     }
 }
