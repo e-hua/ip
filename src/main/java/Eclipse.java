@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 public class Eclipse {
     public static final String name = "Eclipse";
 
@@ -23,5 +25,10 @@ public class Eclipse {
         printIndentedLine(horizontalLine);
         printIndentedLine("Bye. Hope to see you again soon!");
         printIndentedLine(horizontalLine);
+    }
+
+    public static void echo(String[] args) {
+        String aggregateCommand = Arrays.stream(args).reduce("", (a, b) -> a + " " + b);
+        printIndentedLine(aggregateCommand);
     }
 }
