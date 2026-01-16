@@ -37,4 +37,14 @@ public class Eclipse {
         printIndentedLine("added: " + item);
         printIndentedLine(horizontalLine);
     }
+
+    public static void list() {
+        printIndentedLine(horizontalLine);
+        for(int idx = 0; idx < items.size(); idx++) {
+            String currItem = items.get(idx);
+            String formattedEntry = String.format("%d. %s", idx + 1, currItem);
+            printIndentedLine(formattedEntry);
+        }
+        printIndentedLine(horizontalLine);
+    }
 }

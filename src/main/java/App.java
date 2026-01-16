@@ -13,6 +13,9 @@ public class App {
         case "bye":
           Eclipse.exit();
           break scanLoop;
+        case "list":
+          Eclipse.list();
+          break;
         default:
           Eclipse.add(command);
       }
