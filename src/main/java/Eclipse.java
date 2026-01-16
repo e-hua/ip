@@ -1,11 +1,10 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Eclipse {
     public static final String name = "Eclipse";
 
-    private static final List<String> items = new ArrayList<>();
+    private static final List<Task> tasks = new ArrayList<>();
 
     private static final String horizontalLine = "____________________________________________________________";
     private static final String indentSpaces = "    ";
@@ -33,18 +32,20 @@ public class Eclipse {
         System.out.println();
     }
 
-    public static void add(String item) {
+    public static void add(String taskDescription) {
         printIndentedLine(horizontalLine);
-        items.add(item);
-        printIndentedLine("added: " + item);
+        Task newTask = new Task(taskDescription);
+        tasks.add(newTask);
+        printIndentedLine("added: " + newTask);
         printIndentedLine(horizontalLine);
         System.out.println();
     }
 
     public static void list() {
         printIndentedLine(horizontalLine);
-        for(int idx = 0; idx < items.size(); idx++) {
-            String currItem = items.get(idx);
+        printIndentedLine("Here are the tasks in your list:");
+        for(int idx = 0; idx < tasks.size(); idx++) {
+            Task currItem = tasks.get(idx);
             String formattedEntry = String.format("%d. %s", idx + 1, currItem);
             printIndentedLine(formattedEntry);
         }

@@ -1,0 +1,18 @@
+public class Task {
+    private boolean isDone = false;
+    private String description;
+
+    public Task(String description) {
+        this.description = description;
+    }
+
+    public void markAsDone() {
+        this.isDone = true;
+    }
+
+    @Override
+    public String toString() {
+        String mark = this.isDone ? "X" : " ";
+        return String.format("[%s] %s", mark, this.description);
+    }
+}
