@@ -14,7 +14,7 @@ public class App {
           Eclipse.exit();
           break scanLoop;
         default:
-          Eclipse.echo(command);
+          Eclipse.add(command);
       }
     }
 

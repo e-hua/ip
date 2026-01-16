@@ -1,7 +1,11 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Eclipse {
     public static final String name = "Eclipse";
+
+    private static final List<String> items = new ArrayList<>();
 
     private static final String horizontalLine = "____________________________________________________________";
     private static final String indentSpaces = "    ";
@@ -27,9 +31,10 @@ public class Eclipse {
         printIndentedLine(horizontalLine);
     }
 
-    public static void echo(String command) {
+    public static void add(String item) {
         printIndentedLine(horizontalLine);
-        printIndentedLine(command);
+        items.add(item);
+        printIndentedLine("added: " + item);
         printIndentedLine(horizontalLine);
     }
 }
