@@ -65,11 +65,27 @@ public class Eclipse {
 
     public static void mark(int idx) {
         Optional<Task> maybeTask = getTaskById(idx);
-        maybeTask.ifPresent(Task::markAsDone);
+        maybeTask.ifPresent((task) -> {
+            task.markAsDone();
+            printIndentedLine(horizontalLine);
+            printIndentedLine("Nice! I've marked this task as done:");
+            printIndentedLine(task.toString());
+            printIndentedLine(horizontalLine);
+        });
     }
 
     public static void unmark(int idx) {
         Optional<Task> maybeTask = getTaskById(idx);
-        maybeTask.ifPresent(Task::markAsNotDone);
+        maybeTask.ifPresent((task) -> {
+            task.markAsNotDone();
+            printIndentedLine(horizontalLine);
+            printIndentedLine("OK, I've marked this task as not done yet:");
+            printIndentedLine(task.toString());
+            printIndentedLine(horizontalLine);
+        });
+    }
+
+    public static int getNumberOfTasks() {
+        return tasks.size();
     }
 }

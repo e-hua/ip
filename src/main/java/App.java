@@ -11,15 +11,25 @@ public class App {
       String input = scanner.nextLine();
       ParsedInput parsedInput = Parser.parse(input);
 
-      switch (parsedInput.getCommand()) {
-        case BYE:
-          Eclipse.exit();
-          break scanLoop;
-        case LIST:
-          Eclipse.list();
-          break;
-        default:
-          Eclipse.add(input);
+      try {
+        switch (parsedInput.getCommand()) {
+          case BYE:
+            Eclipse.exit();
+            break scanLoop;
+          case LIST:
+            Eclipse.list();
+            break;
+          case MARK:
+            parsedInput.getOptionalParams().ifPresent((param) -> Eclipse.mark(Parser.parseListIndex(param)));
+            break;
+          case UNMARK:
+            parsedInput.getOptionalParams().ifPresent((param) -> Eclipse.unmark(Parser.parseListIndex(param)));
+            break;
+          default:
+            Eclipse.add(input);
+        }
+      } catch (IllegalArgumentException e) {
+        System.err.println(e);
       }
     }
 
