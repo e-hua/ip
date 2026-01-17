@@ -8,16 +8,18 @@ public class App {
     Eclipse.greet();
 
     scanLoop: while (true) {
-      String command = scanner.nextLine();
-      switch (command) {
-        case "bye":
+      String input = scanner.nextLine();
+      ParsedInput parsedInput = Parser.parse(input);
+
+      switch (parsedInput.getCommand()) {
+        case BYE:
           Eclipse.exit();
           break scanLoop;
-        case "list":
+        case LIST:
           Eclipse.list();
           break;
         default:
-          Eclipse.add(command);
+          Eclipse.add(input);
       }
     }
 
