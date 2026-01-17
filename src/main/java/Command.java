@@ -3,5 +3,8 @@ public enum Command {
     LIST,
     MARK,
     UNMARK,
+    TODO,
+    EVENT,
+    DEADLINE,
     INVALID;
 }
