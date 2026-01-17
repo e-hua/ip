@@ -1,5 +1,7 @@
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 
 public class Eclipse {
     public static final String name = "Eclipse";
@@ -51,5 +53,23 @@ public class Eclipse {
         }
         printIndentedLine(horizontalLine);
         System.out.println();
+    }
+
+    private static Optional<Task> getTaskById(int id) {
+        try {
+            return Optional.of(tasks.get(id));
+        } catch(Exception e) {
+            return Optional.empty();
+        }
+    }
+
+    public static void mark(int idx) {
+        Optional<Task> maybeTask = getTaskById(idx);
+        maybeTask.ifPresent(Task::markAsDone);
+    }
+
+    public static void unmark(int idx) {
+        Optional<Task> maybeTask = getTaskById(idx);
+        maybeTask.ifPresent(Task::markAsNotDone);
     }
 }

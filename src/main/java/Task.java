@@ -10,6 +10,10 @@ public class Task {
         this.isDone = true;
     }
 
+    public void markAsNotDone() {
+        this.isDone = false;
+    }
+
     @Override
     public String toString() {
         String mark = this.isDone ? "X" : " ";
