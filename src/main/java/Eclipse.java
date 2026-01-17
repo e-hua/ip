@@ -59,6 +59,7 @@ public class Eclipse {
         System.out.println();
     }
 
+
     public static void list() {
         printIndentedLine(horizontalLine);
         printIndentedLine("Here are the tasks in your list:");
@@ -100,6 +101,19 @@ public class Eclipse {
             printIndentedLine(horizontalLine);
         });
     }
+
+    public static void delete(int idx) {
+        Optional<Task> maybeTask = getTaskById(idx);
+        maybeTask.ifPresent((task) -> {
+            tasks.remove(idx);
+            printIndentedLine(horizontalLine);
+            printIndentedLine("Noted. I've removed this task:");
+            printIndentedLine(task.toString());
+            printIndentedLine(String.format("Now you have %d tasks in the list.", Eclipse.getNumberOfTasks()));
+            printIndentedLine(horizontalLine);
+        });
+    }
+
 
     public static int getNumberOfTasks() {
         return tasks.size();

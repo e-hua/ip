@@ -31,6 +31,9 @@ public class App {
                     case EVENT, DEADLINE, TODO:
                         Eclipse.add(parsedInput);
                         break;
+                    case DELETE:
+                        Eclipse.delete(Parser.parseListIndex(parsedInput.getParams()));
+                        break;
                     default:
                         throw new EclipseException("Unknown input: " + input);
                 }

@@ -50,6 +50,7 @@ public class Parser {
             case "list" -> new ParsedInput(Command.LIST, maybeParams);
             case "mark" -> new ParsedInput(Command.MARK, maybeParams);
             case "unmark" -> new ParsedInput(Command.UNMARK, maybeParams);
+            case "delete" -> new ParsedInput(Command.DELETE, maybeParams);
             case "todo" -> new ParsedInput(Command.TODO, maybeParams);
             case "deadline" -> {
                 Matcher deadlinePatternMatcher = deadlinePattern.matcher(maybeParams.orElseThrow());
@@ -75,7 +76,6 @@ public class Parser {
                         eventPatternMatcher.group("fromDate")
                 );
             }
-
             default -> new ParsedInput(Command.INVALID, maybeParams);
         };
     }
