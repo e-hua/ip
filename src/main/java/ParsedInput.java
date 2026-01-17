@@ -1,3 +1,5 @@
+import Exceptions.EclipseException;
+
 import java.util.Optional;
 
 public class ParsedInput {
@@ -50,19 +52,35 @@ public class ParsedInput {
         return this.optionalParams;
     }
 
-    public String getParams() throws IllegalArgumentException {
-        return this.optionalParams.orElseThrow(() -> new IllegalArgumentException("No parameter provided in user input"));
+    public String getParams() throws EclipseException {
+        try {
+            return this.optionalParams.orElseThrow();
+        } catch (Exception e) {
+            throw new EclipseException("The parameter is not detected in the parsed output", e);
+        }
     }
 
-    public String getBy() throws IllegalArgumentException {
-        return this.optionalBy.orElseThrow(() -> new IllegalArgumentException("No 'by' field provided in user input"));
+    public String getBy() throws EclipseException {
+        try {
+            return this.optionalBy.orElseThrow();
+        } catch (Exception e) {
+            throw new EclipseException("The 'by' field is not detected in parsed output", e);
+        }
     }
 
-    public String getTo() throws IllegalArgumentException {
-        return this.optionalTo.orElseThrow(() -> new IllegalArgumentException("No 'to' field provided in user input"));
+    public String getTo() throws EclipseException {
+        try {
+            return this.optionalTo.orElseThrow();
+        } catch (Exception e) {
+            throw new EclipseException("The 'to' field is not detected in parsed output", e);
+        }
     }
 
-    public String getFrom() throws IllegalArgumentException {
-        return this.optionalFrom.orElseThrow(() -> new IllegalArgumentException("No 'from' field provided in user input"));
+    public String getFrom() throws EclipseException {
+        try {
+            return this.optionalFrom.orElseThrow();
+        } catch (Exception e) {
+            throw new EclipseException("The 'from' field is not detected in parsed output", e);
+        }
     }
 }

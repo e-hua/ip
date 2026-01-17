@@ -1,3 +1,5 @@
+import Exceptions.EclipseException;
+
 import java.util.Scanner;
 
 public class App {
@@ -21,19 +23,21 @@ public class App {
                         Eclipse.list();
                         break;
                     case MARK:
-                        parsedInput.getOptionalParams().ifPresent((param) -> Eclipse.mark(Parser.parseListIndex(param)));
+                        Eclipse.mark(Parser.parseListIndex(parsedInput.getParams()));
                         break;
                     case UNMARK:
-                        parsedInput.getOptionalParams().ifPresent((param) -> Eclipse.unmark(Parser.parseListIndex(param)));
+                        Eclipse.unmark(Parser.parseListIndex(parsedInput.getParams()));
                         break;
                     case EVENT, DEADLINE, TODO:
                         Eclipse.add(parsedInput);
                         break;
                     default:
-                        throw new IllegalArgumentException("Invalid input: " + input);
+                        throw new EclipseException("Unknown input: " + input);
                 }
-            } catch (Exception e) {
-                System.err.println(e);
+            } catch (EclipseException e) {
+                Eclipse.printIndentedHorizontalLine();
+                Eclipse.printIndentedLine("OOPS!!! " + e.getMessage());
+                Eclipse.printIndentedHorizontalLine();
             }
         }
 

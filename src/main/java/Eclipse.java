@@ -1,5 +1,6 @@
+import Exceptions.EclipseException;
+
 import java.util.ArrayList;
-import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,7 +16,7 @@ public class Eclipse {
 
     }
 
-    private static void printIndentedLine(String str) {
+    public static void printIndentedLine(String str) {
         System.out.println(indentSpaces + str);
     }
 
@@ -34,7 +35,7 @@ public class Eclipse {
         System.out.println();
     }
 
-    public static void add(ParsedInput parsedInput) throws IllegalArgumentException {
+    public static void add(ParsedInput parsedInput) throws EclipseException {
         printIndentedLine(horizontalLine);
         Task newTask = switch (parsedInput.getCommand()) {
             case TODO -> new Todo(parsedInput.getParams());
@@ -47,7 +48,7 @@ public class Eclipse {
                     parsedInput.getFrom(),
                     parsedInput.getTo()
             );
-            default -> throw new IllegalArgumentException("Invalid parsed input" + parsedInput);
+            default -> throw new EclipseException("Invalid parsed input, cannot be added as task" + parsedInput);
         };
 
         tasks.add(newTask);
@@ -102,5 +103,9 @@ public class Eclipse {
 
     public static int getNumberOfTasks() {
         return tasks.size();
+    }
+
+    public static void printIndentedHorizontalLine() {
+        printIndentedLine(horizontalLine);
     }
 }

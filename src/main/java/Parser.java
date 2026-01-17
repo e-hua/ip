@@ -1,3 +1,5 @@
+import Exceptions.EclipseException;
+
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -78,16 +80,21 @@ public class Parser {
         };
     }
 
-    public static int parseListIndex(String inputIndex) throws IllegalArgumentException {
+    public static int parseListIndex(String inputIndex) throws EclipseException {
         int inputIndexParsed;
         try {
             inputIndexParsed = Integer.parseInt(inputIndex);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid input index detected, wrong format: " + inputIndex);
+        } catch (Exception e) {
+            throw new EclipseException(
+                    String.format("Invalid input index detected, wrong format: %s", inputIndex),
+                    e
+            );
         }
 
         if (inputIndexParsed <= 0 || inputIndexParsed > Eclipse.getNumberOfTasks()) {
-            throw new IllegalArgumentException("Invalid input index detected, index not in the list: " + inputIndex);
+            throw new EclipseException(
+                    String.format("Index %s not in the list, length of the list: %d", inputIndex, Eclipse.getNumberOfTasks())
+            );
         }
 
         return inputIndexParsed - 1;
