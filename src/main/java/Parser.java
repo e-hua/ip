@@ -37,4 +37,19 @@ public class Parser {
             default -> new ParsedInput(Command.INVALID, maybeParams);
         };
     }
+
+    public static int parseListIndex(String inputIndex) throws IllegalArgumentException {
+        int inputIndexParsed;
+        try {
+            inputIndexParsed = Integer.parseInt(inputIndex);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid input index detected, wrong format: " + inputIndex);
+        }
+
+        if (inputIndexParsed <= 0 || inputIndexParsed > Eclipse.getNumberOfTasks()) {
+            throw new IllegalArgumentException("Invalid input index detected, index not in the list: " + inputIndex);
+        }
+
+        return inputIndexParsed - 1;
+    }
 }
