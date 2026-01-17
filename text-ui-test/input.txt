@@ -12,4 +12,6 @@ unmark 1
 list
 todo
 blah
+delete 3
+list
 bye
