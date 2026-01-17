@@ -34,11 +34,26 @@ public class Eclipse {
         System.out.println();
     }
 
-    public static void add(String taskDescription) {
+    public static void add(ParsedInput parsedInput) throws IllegalArgumentException {
         printIndentedLine(horizontalLine);
-        Task newTask = new Task(taskDescription);
+        Task newTask = switch (parsedInput.getCommand()) {
+            case TODO -> new Todo(parsedInput.getParams());
+            case DEADLINE -> new Deadline(
+                    parsedInput.getParams(),
+                    parsedInput.getBy()
+            );
+            case EVENT -> new Event(
+                    parsedInput.getParams(),
+                    parsedInput.getFrom(),
+                    parsedInput.getTo()
+            );
+            default -> throw new IllegalArgumentException("Invalid parsed input" + parsedInput);
+        };
+
         tasks.add(newTask);
-        printIndentedLine("added: " + newTask);
+        printIndentedLine("Got it. I've added this task:");
+        printIndentedLine("  " + newTask);
+        printIndentedLine(String.format("Now you have %d tasks in the list.", Eclipse.getNumberOfTasks()));
         printIndentedLine(horizontalLine);
         System.out.println();
     }
@@ -46,7 +61,7 @@ public class Eclipse {
     public static void list() {
         printIndentedLine(horizontalLine);
         printIndentedLine("Here are the tasks in your list:");
-        for(int idx = 0; idx < tasks.size(); idx++) {
+        for (int idx = 0; idx < tasks.size(); idx++) {
             Task currItem = tasks.get(idx);
             String formattedEntry = String.format("%d. %s", idx + 1, currItem);
             printIndentedLine(formattedEntry);
@@ -58,7 +73,7 @@ public class Eclipse {
     private static Optional<Task> getTaskById(int id) {
         try {
             return Optional.of(tasks.get(id));
-        } catch(Exception e) {
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
