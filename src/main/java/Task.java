@@ -19,4 +19,10 @@ public class Task {
         String mark = this.isDone ? "X" : " ";
         return String.format("[%s] %s", mark, this.description);
     }
+
+
+    // 1 | read book
+    public String toStorageString() {
+        return String.format("%s | %s", isDone ? "1" : "0", this.description);
+    }
 }
