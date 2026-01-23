@@ -24,6 +24,6 @@ public class Event extends Task {
 
     @Override
     public String toStorageString() {
-        return String.format("%s | %s | %s-%s", "E", super.toStorageString(), this.from, this.to);
+        return String.format("%s | %s | %s=>%s", "E", super.toStorageString(), this.from, this.to);
     }
 }
