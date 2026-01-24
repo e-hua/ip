@@ -1,20 +1,21 @@
 import Exceptions.EclipseException;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class ParsedInput {
     private Command command;
     private final Optional<String> optionalParams;
-    private final Optional<String> optionalFrom;
-    private final Optional<String> optionalTo;
-    private final Optional<String> optionalBy;
+    private final Optional<LocalDate> optionalFrom;
+    private final Optional<LocalDate> optionalTo;
+    private final Optional<LocalDate> optionalBy;
 
     public ParsedInput(
             Command command,
             Optional<String> optionalParams,
-            Optional<String> optionalFrom,
-            Optional<String> optionalTo,
-            Optional<String> optionalBy
+            Optional<LocalDate> optionalFrom,
+            Optional<LocalDate> optionalTo,
+            Optional<LocalDate> optionalBy
     ) {
         this.command = command;
         this.optionalParams = optionalParams;
@@ -32,15 +33,15 @@ public class ParsedInput {
     public ParsedInput(
             Command command,
             String params,
-            String to,
-            String from) {
+            LocalDate from,
+            LocalDate to) {
         this(command, Optional.of(params), Optional.of(from), Optional.of(to), Optional.empty());
     }
 
     public ParsedInput(
             Command command,
             String params,
-            String by) {
+            LocalDate by) {
         this(command, Optional.of(params), Optional.empty(), Optional.empty(), Optional.of(by));
     }
 
@@ -60,7 +61,7 @@ public class ParsedInput {
         }
     }
 
-    public String getBy() throws EclipseException {
+    public LocalDate getBy() throws EclipseException {
         try {
             return this.optionalBy.orElseThrow();
         } catch (Exception e) {
@@ -68,7 +69,7 @@ public class ParsedInput {
         }
     }
 
-    public String getTo() throws EclipseException {
+    public LocalDate getTo() throws EclipseException {
         try {
             return this.optionalTo.orElseThrow();
         } catch (Exception e) {
@@ -76,7 +77,7 @@ public class ParsedInput {
         }
     }
 
-    public String getFrom() throws EclipseException {
+    public LocalDate getFrom() throws EclipseException {
         try {
             return this.optionalFrom.orElseThrow();
         } catch (Exception e) {
