@@ -5,125 +5,99 @@ import java.util.List;
 import java.util.Optional;
 
 public class Eclipse {
-    public static final String name = "Eclipse";
+    public final String name = "Eclipse";
 
-    private static final String horizontalLine = "____________________________________________________________";
-    private static final String indentSpaces = "    ";
+    private Storage storage;
+    private TaskList tasks;
+    private Ui ui;
 
-    private final List<Task> tasks;
+    public Eclipse(String dirPath) {
+        this.ui = new Ui();
+        this.storage = new Storage(new StorageParser(), dirPath);
 
-    public Eclipse(List<Task> tasks) {
-        this.tasks = tasks;
+        try {
+            this.tasks = new TaskList(this.storage.readTasks());
+        } catch (EclipseException e) {
+            this.ui.showRecoverableError(e);
+            this.tasks = new TaskList();
+        }
     }
 
-    public List<Task> getTasks() {
-        return this.tasks;
+    public void saveTasks() throws EclipseException {
+        this.storage.storeTasks(this.tasks.getTasks());
     }
 
-    public static void printIndentedLine(String str) {
-        System.out.println(indentSpaces + str);
+    public void greet() {
+        this.ui.greet(this.name);
     }
 
-    public static void greet() {
-        printIndentedLine(horizontalLine);
-        printIndentedLine("Hello! I'm " + Eclipse.name);
-        printIndentedLine("What can I do for you?");
-        printIndentedLine(horizontalLine);
-        System.out.println();
+    public void exit() {
+        this.ui.exit();
     }
 
-    public static void exit() {
-        printIndentedLine(horizontalLine);
-        printIndentedLine("Bye. Hope to see you again soon!");
-        printIndentedLine(horizontalLine);
-        System.out.println();
+    public void list() {
+        this.ui.showBorder();
+        this.ui.showContent("Here are the tasks in your list:");
+        for (int idx = 0; idx < tasks.getNumberOfTasks(); idx++) {
+            Optional<Task> maybeCurrTask = tasks.getTaskById(idx);
+            if (maybeCurrTask.isPresent()) {
+                Task currTask = maybeCurrTask.get();
+                String formattedEntry = String.format("%d. %s", idx + 1, currTask);
+                this.ui.showContent(formattedEntry);
+            }
+        }
+        this.ui.showBorder();
+        this.ui.endOutput();
     }
 
     public void add(ParsedInput parsedInput) throws EclipseException {
-        printIndentedLine(horizontalLine);
-        Task newTask = switch (parsedInput.getCommand()) {
-            case TODO -> new Todo(parsedInput.getParams());
-            case DEADLINE -> new Deadline(
-                    parsedInput.getParams(),
-                    parsedInput.getBy()
-            );
-            case EVENT -> new Event(
-                    parsedInput.getParams(),
-                    parsedInput.getFrom(),
-                    parsedInput.getTo()
-            );
-            default -> throw new EclipseException("Invalid parsed input, cannot be added as task" + parsedInput);
-        };
-
-        tasks.add(newTask);
-        printIndentedLine("Got it. I've added this task:");
-        printIndentedLine("  " + newTask);
-        printIndentedLine(String.format("Now you have %d tasks in the list.", this.getNumberOfTasks()));
-        printIndentedLine(horizontalLine);
-        System.out.println();
+        Task newTask = tasks.add(parsedInput);
+        this.ui.showBorder();
+        this.ui.showContent("Got it. I've added this task:");
+        this.ui.showContent("  " + newTask);
+        this.ui.showContent(String.format("Now you have %d tasks in the list.", this.tasks.getNumberOfTasks()));
+        this.ui.showBorder();
+        this.ui.endOutput();
     }
 
+    public void delete(int idx) throws EclipseException {
+        Task deletedTask = tasks.delete(idx);
 
-    public void list() {
-        printIndentedLine(horizontalLine);
-        printIndentedLine("Here are the tasks in your list:");
-        for (int idx = 0; idx < tasks.size(); idx++) {
-            Task currItem = tasks.get(idx);
-            String formattedEntry = String.format("%d. %s", idx + 1, currItem);
-            printIndentedLine(formattedEntry);
-        }
-        printIndentedLine(horizontalLine);
-        System.out.println();
-    }
-
-    private Optional<Task> getTaskById(int id) {
-        try {
-            return Optional.of(tasks.get(id));
-        } catch (Exception e) {
-            return Optional.empty();
-        }
+        this.ui.showBorder();
+        this.ui.showContent("Noted. I've removed this task:");
+        this.ui.showContent("  " + deletedTask);
+        this.ui.showContent(String.format("Now you have %d tasks in the list.", this.tasks.getNumberOfTasks()));
+        this.ui.showBorder();
+        this.ui.endOutput();
     }
 
     public void mark(int idx) {
-        Optional<Task> maybeTask = getTaskById(idx);
+        Optional<Task> maybeTask = this.tasks.getTaskById(idx);
         maybeTask.ifPresent((task) -> {
             task.markAsDone();
-            printIndentedLine(horizontalLine);
-            printIndentedLine("Nice! I've marked this task as done:");
-            printIndentedLine(task.toString());
-            printIndentedLine(horizontalLine);
+            this.ui.showBorder();
+            this.ui.showContent("Nice! I've marked this task as done:");
+            this.ui.showContent(task.toString());
+            this.ui.showBorder();
         });
     }
 
     public void unmark(int idx) {
-        Optional<Task> maybeTask = getTaskById(idx);
+        Optional<Task> maybeTask = this.tasks.getTaskById(idx);
         maybeTask.ifPresent((task) -> {
             task.markAsNotDone();
-            printIndentedLine(horizontalLine);
-            printIndentedLine("OK, I've marked this task as not done yet:");
-            printIndentedLine(task.toString());
-            printIndentedLine(horizontalLine);
+            this.ui.showBorder();
+            this.ui.showContent("OK, I've marked this task as not done yet:");
+            this.ui.showContent(task.toString());
+            this.ui.showBorder();
         });
     }
 
-    public void delete(int idx) {
-        Optional<Task> maybeTask = getTaskById(idx);
-        maybeTask.ifPresent((task) -> {
-            tasks.remove(idx);
-            printIndentedLine(horizontalLine);
-            printIndentedLine("Noted. I've removed this task:");
-            printIndentedLine(task.toString());
-            printIndentedLine(String.format("Now you have %d tasks in the list.", this.getNumberOfTasks()));
-            printIndentedLine(horizontalLine);
-        });
+    public void handleRecoverableError(EclipseException e) {
+        this.ui.showRecoverableError(e);
     }
-
 
     public int getNumberOfTasks() {
-        return tasks.size();
-    }
-
-    public static void printIndentedHorizontalLine() {
-        printIndentedLine(horizontalLine);
+        return this.tasks.getNumberOfTasks();
     }
 }
