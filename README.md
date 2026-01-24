@@ -36,3 +36,4 @@ Delete the `build/` folder: `./gradlew clean`
 Compile all files(Build): `./gradlew build`
 Run the application: `./gradlew run --console=plain`
 Build create a fat JAR file of the application: `./gradlew clean shadowJar`
+Run JUnit testing: `./gradlew test`
