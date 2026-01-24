@@ -56,6 +56,9 @@ public class Eclipse {
 
     public void add(ParsedInput parsedInput) throws EclipseException {
         Task newTask = tasks.add(parsedInput);
+        if (newTask.getDescription().trim().isEmpty()) {
+            throw new EclipseException("Meaningless description: '" + newTask.getDescription() + "'");
+        }
         this.ui.showBorder();
         this.ui.showContent("Got it. I've added this task:");
         this.ui.showContent("  " + newTask);

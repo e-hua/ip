@@ -43,12 +43,11 @@ public class Parser {
         Matcher inputPatternMatcher = inputPattern.matcher(input);
 
         if (!inputPatternMatcher.matches()) {
-            return new ParsedInput(Command.INVALID, Optional.empty());
+            throw new EclipseException("Failed to parse, invalid input format detected: '" + input + "'");
         }
 
         String commandStr = inputPatternMatcher.group("command");
         Optional<String> maybeParams = Optional.ofNullable(inputPatternMatcher.group("params"));
-
 
         return switch (commandStr) {
             case "bye" -> new ParsedInput(Command.BYE, maybeParams);
