@@ -9,23 +9,12 @@ import java.util.Scanner;
 public class App {
 
     public static void main(String[] args) {
-        Storage tasksStorage;
-        Eclipse chatbot;
         String dirPath = "./data";
-
-        try {
-            tasksStorage = new Storage(new StorageParser(), dirPath);
-            chatbot = new Eclipse(tasksStorage.readTasks());
-        } catch (EclipseException e) {
-            Eclipse.printIndentedHorizontalLine();
-            Eclipse.printIndentedLine("Fatal, chatbot failed to boot!!! " + e.getMessage());
-            Eclipse.printIndentedHorizontalLine();
-            return;
-        }
+        Eclipse chatbot = new Eclipse(dirPath);
 
         Scanner scanner = new Scanner(System.in);
 
-        Eclipse.greet();
+        chatbot.greet();
 
         scanLoop:
         while (true) {
@@ -35,34 +24,32 @@ public class App {
                 ParsedInput parsedInput = Parser.parse(input);
                 switch (parsedInput.getCommand()) {
                 case BYE:
-                    Eclipse.exit();
+                    chatbot.exit();
                     break scanLoop;
                 case LIST:
                     chatbot.list();
                     break;
                 case MARK:
                     chatbot.mark(Parser.parseListIndex(parsedInput.getParams(), chatbot));
-                    tasksStorage.storeTasks(chatbot.getTasks());
+                    chatbot.saveTasks();
                     break;
                 case UNMARK:
                     chatbot.unmark(Parser.parseListIndex(parsedInput.getParams(), chatbot));
-                    tasksStorage.storeTasks(chatbot.getTasks());
+                    chatbot.saveTasks();
                     break;
                 case EVENT, DEADLINE, TODO:
                     chatbot.add(parsedInput);
-                    tasksStorage.storeTasks(chatbot.getTasks());
+                    chatbot.saveTasks();
                     break;
                 case DELETE:
                     chatbot.delete(Parser.parseListIndex(parsedInput.getParams(), chatbot));
-                    tasksStorage.storeTasks(chatbot.getTasks());
+                    chatbot.saveTasks();
                     break;
                 default:
-                    throw new EclipseException("Unknown input: " + input);
+                    throw new EclipseException("Unknown input command: " + input);
                 }
             } catch (EclipseException e) {
-                Eclipse.printIndentedHorizontalLine();
-                Eclipse.printIndentedLine("OOPS!!! " + e.getMessage());
-                Eclipse.printIndentedHorizontalLine();
+                chatbot.handleRecoverableError(e);
             }
         }
 
