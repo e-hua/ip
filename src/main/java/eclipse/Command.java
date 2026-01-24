@@ -1,3 +1,5 @@
+package eclipse;
+
 public enum Command {
     BYE,
     LIST,

@@ -1,9 +1,9 @@
-import Exceptions.EclipseException;
+package eclipse;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import eclipse.exceptions.EclipseException;
+import eclipse.parser.ParsedInput;
+import eclipse.parser.Parser;
+
 import java.util.Scanner;
 
 public class App {
