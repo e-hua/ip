@@ -30,9 +30,9 @@ public class App {
         scanLoop:
         while (true) {
             String input = scanner.nextLine();
-            ParsedInput parsedInput = Parser.parse(input, chatbot);
 
             try {
+                ParsedInput parsedInput = Parser.parse(input);
                 switch (parsedInput.getCommand()) {
                 case BYE:
                     Eclipse.exit();

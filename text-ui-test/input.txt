@@ -9,14 +9,13 @@ unmark 1
 list
 todo
 blah
-delete 4
 delete 3
 delete 1
 delete 1
 list
 todo borrow book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+deadline return book /by 2019-10-15
+event project meeting /from 2019-10-15 /to 2019-10-16
 deadline do homework /by no idea :-p
 mark 3
 list
