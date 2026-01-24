@@ -8,9 +8,22 @@ public class Event extends Task {
         this.to = to;
     }
 
+
+    public Event(String description, boolean isDone, String from, String to) {
+        super(description, isDone);
+        this.from = from;
+        this.to = to;
+    }
+
     // [E][ ] project meeting (from: Mon 2pm to: 4pm)
     @Override
     public String toString() {
         return String.format("[E]%s (from: %s to: %s)", super.toString(), this.from, this.to);
+    }
+
+
+    @Override
+    public String toStorageString() {
+        return String.format("%s | %s | %s=>%s", "E", super.toStorageString(), this.from, this.to);
     }
 }

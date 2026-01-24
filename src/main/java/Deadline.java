@@ -6,9 +6,21 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public Deadline(String description, boolean isDone, String by) {
+        super(description, isDone);
+        this.by = by;
+    }
+
     // [D][ ] return book (by: Sunday)
     @Override
     public String toString() {
         return String.format("[D]%s (by: %s)", super.toString(), this.by);
+    }
+
+
+    // D | 0 | return book | June 6th
+    @Override
+    public String toStorageString() {
+        return String.format("%s | %s | %s", "D", super.toStorageString(), this.by);
     }
 }

@@ -7,13 +7,17 @@ import java.util.Optional;
 public class Eclipse {
     public static final String name = "Eclipse";
 
-    private static final List<Task> tasks = new ArrayList<>();
-
     private static final String horizontalLine = "____________________________________________________________";
     private static final String indentSpaces = "    ";
 
-    public Eclipse() {
+    private final List<Task> tasks;
 
+    public Eclipse(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public List<Task> getTasks() {
+        return this.tasks;
     }
 
     public static void printIndentedLine(String str) {
@@ -35,7 +39,7 @@ public class Eclipse {
         System.out.println();
     }
 
-    public static void add(ParsedInput parsedInput) throws EclipseException {
+    public void add(ParsedInput parsedInput) throws EclipseException {
         printIndentedLine(horizontalLine);
         Task newTask = switch (parsedInput.getCommand()) {
             case TODO -> new Todo(parsedInput.getParams());
@@ -54,13 +58,13 @@ public class Eclipse {
         tasks.add(newTask);
         printIndentedLine("Got it. I've added this task:");
         printIndentedLine("  " + newTask);
-        printIndentedLine(String.format("Now you have %d tasks in the list.", Eclipse.getNumberOfTasks()));
+        printIndentedLine(String.format("Now you have %d tasks in the list.", this.getNumberOfTasks()));
         printIndentedLine(horizontalLine);
         System.out.println();
     }
 
 
-    public static void list() {
+    public void list() {
         printIndentedLine(horizontalLine);
         printIndentedLine("Here are the tasks in your list:");
         for (int idx = 0; idx < tasks.size(); idx++) {
@@ -72,7 +76,7 @@ public class Eclipse {
         System.out.println();
     }
 
-    private static Optional<Task> getTaskById(int id) {
+    private Optional<Task> getTaskById(int id) {
         try {
             return Optional.of(tasks.get(id));
         } catch (Exception e) {
@@ -80,7 +84,7 @@ public class Eclipse {
         }
     }
 
-    public static void mark(int idx) {
+    public void mark(int idx) {
         Optional<Task> maybeTask = getTaskById(idx);
         maybeTask.ifPresent((task) -> {
             task.markAsDone();
@@ -91,7 +95,7 @@ public class Eclipse {
         });
     }
 
-    public static void unmark(int idx) {
+    public void unmark(int idx) {
         Optional<Task> maybeTask = getTaskById(idx);
         maybeTask.ifPresent((task) -> {
             task.markAsNotDone();
@@ -102,20 +106,20 @@ public class Eclipse {
         });
     }
 
-    public static void delete(int idx) {
+    public void delete(int idx) {
         Optional<Task> maybeTask = getTaskById(idx);
         maybeTask.ifPresent((task) -> {
             tasks.remove(idx);
             printIndentedLine(horizontalLine);
             printIndentedLine("Noted. I've removed this task:");
             printIndentedLine(task.toString());
-            printIndentedLine(String.format("Now you have %d tasks in the list.", Eclipse.getNumberOfTasks()));
+            printIndentedLine(String.format("Now you have %d tasks in the list.", this.getNumberOfTasks()));
             printIndentedLine(horizontalLine);
         });
     }
 
 
-    public static int getNumberOfTasks() {
+    public int getNumberOfTasks() {
         return tasks.size();
     }
 

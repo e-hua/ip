@@ -34,7 +34,7 @@ public class Parser {
             "(?<subject>.*?)\\s+/from\\s+(?<fromDate>.*?)\\s+/to\\s+(?<toDate>.*?)\\s*"
     );
 
-    public static ParsedInput parse(String input) {
+    public static ParsedInput parse(String input, Eclipse chatbot) {
         Matcher inputPatternMatcher = inputPattern.matcher(input);
 
         if (!inputPatternMatcher.matches()) {
@@ -80,7 +80,7 @@ public class Parser {
         };
     }
 
-    public static int parseListIndex(String inputIndex) throws EclipseException {
+    public static int parseListIndex(String inputIndex, Eclipse chatbot) throws EclipseException {
         int inputIndexParsed;
         try {
             inputIndexParsed = Integer.parseInt(inputIndex);
@@ -91,9 +91,9 @@ public class Parser {
             );
         }
 
-        if (inputIndexParsed <= 0 || inputIndexParsed > Eclipse.getNumberOfTasks()) {
+        if (inputIndexParsed <= 0 || inputIndexParsed > chatbot.getNumberOfTasks()) {
             throw new EclipseException(
-                    String.format("Index %s not in the list, length of the list: %d", inputIndex, Eclipse.getNumberOfTasks())
+                    String.format("Index %s not in the list, length of the list: %d", inputIndex, chatbot.getNumberOfTasks())
             );
         }
 

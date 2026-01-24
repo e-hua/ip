@@ -30,9 +30,17 @@ dos2unix ACTUAL.TXT EXPECTED-UNIX.TXT
 diff ACTUAL.TXT EXPECTED-UNIX.TXT
 if [ $? -eq 0 ]
 then
-    echo "Test result: PASSED"
-    exit 0
+    echo "Test outputs result: PASSED"
 else
-    echo "Test result: FAILED"
+    echo "Test outputs result: FAILED"
+    exit 1
+fi
+
+diff ./data/tasks.txt ./data/expected_tasks.txt
+if [ $? -eq 0 ]
+then
+    echo "Test storage result: PASSED"
+else
+    echo "Test storage result: FAILED"
     exit 1
 fi
