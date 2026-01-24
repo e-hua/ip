@@ -1,7 +1,11 @@
-import Exceptions.EclipseException;
+package eclipse;
 
-import java.util.ArrayList;
-import java.util.List;
+import eclipse.exceptions.EclipseException;
+import eclipse.parser.ParsedInput;
+import eclipse.storage.Storage;
+import eclipse.storage.StorageParser;
+import eclipse.task.Task;
+
 import java.util.Optional;
 
 public class Eclipse {

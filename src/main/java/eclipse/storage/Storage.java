@@ -1,3 +1,5 @@
+package eclipse.storage;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -8,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import Exceptions.EclipseException;
+import eclipse.exceptions.EclipseException;
+import eclipse.task.Task;
 
 public class Storage {
     private final StorageParser storageParser;

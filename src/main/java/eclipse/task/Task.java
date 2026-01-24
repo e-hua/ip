@@ -1,3 +1,5 @@
+package eclipse.task;
+
 public class Task {
     private boolean isDone = false;
     private String description;

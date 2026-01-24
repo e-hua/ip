@@ -1,8 +1,15 @@
+package eclipse;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import Exceptions.EclipseException;
+import eclipse.exceptions.EclipseException;
+import eclipse.parser.ParsedInput;
+import eclipse.task.Deadline;
+import eclipse.task.Event;
+import eclipse.task.Task;
+import eclipse.task.Todo;
 
 public class TaskList {
     private final List<Task> tasks;

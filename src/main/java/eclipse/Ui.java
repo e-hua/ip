@@ -1,4 +1,6 @@
-import Exceptions.EclipseException;
+package eclipse;
+
+import eclipse.exceptions.EclipseException;
 
 public class Ui {
     private static final String horizontalLine = "____________________________________________________________";

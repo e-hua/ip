@@ -1,4 +1,4 @@
-package Exceptions;
+package eclipse.exceptions;
 
 public class EclipseException extends Exception {
     public EclipseException(String message) {

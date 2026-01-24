@@ -1,4 +1,10 @@
-import Exceptions.EclipseException;
+package eclipse.storage;
+
+import eclipse.exceptions.EclipseException;
+import eclipse.task.Deadline;
+import eclipse.task.Event;
+import eclipse.task.Task;
+import eclipse.task.Todo;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -40,13 +46,13 @@ public class StorageParser {
         String trimmedLine = storedLine.trim();
 
         if (trimmedLine.isEmpty()) {
-            throw new EclipseException("StorageParser detected that there's an empty line");
+            throw new EclipseException("eclipse.storage.StorageParser detected that there's an empty line");
         }
 
         Matcher storedTaskMatcher = storageTaskPattern.matcher(trimmedLine);
 
         if (!storedTaskMatcher.matches()) {
-            throw new EclipseException("StorageParser failed to parse this line: \n" + storedLine);
+            throw new EclipseException("eclipse.storage.StorageParser failed to parse this line: \n" + storedLine);
         }
 
         String taskType = storedTaskMatcher.group("taskType");
@@ -64,7 +70,7 @@ public class StorageParser {
         Matcher storedDeadlineMatcher = storageDeadlinePattern.matcher(deadlineContent);
 
         if (!storedDeadlineMatcher.matches()) {
-            throw new EclipseException("StorageParser failed to parse this content as Deadline : \n" + deadlineContent);
+            throw new EclipseException("eclipse.storage.StorageParser failed to parse this content as eclipse.task.Deadline : \n" + deadlineContent);
         }
 
         String deadlineDescription = storedDeadlineMatcher.group("taskDescription");
@@ -85,7 +91,7 @@ public class StorageParser {
         Matcher storedEventMatcher = storageEventPattern.matcher(eventContent);
 
         if (!storedEventMatcher.matches()) {
-            throw new EclipseException("StorageParser failed to parse this content as Event : \n" + eventContent);
+            throw new EclipseException("eclipse.storage.StorageParser failed to parse this content as eclipse.task.Event : \n" + eventContent);
         }
 
         String eventDescription = storedEventMatcher.group("taskDescription");
