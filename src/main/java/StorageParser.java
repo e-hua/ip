@@ -1,5 +1,7 @@
 import Exceptions.EclipseException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,7 +70,15 @@ public class StorageParser {
         String deadlineDescription = storedDeadlineMatcher.group("taskDescription");
         String by = storedDeadlineMatcher.group("by");
 
-        return new Deadline(deadlineDescription, isDone, by);
+        try {
+            LocalDate byDate = LocalDate.parse(by);
+            return new Deadline(deadlineDescription, isDone, byDate);
+        } catch (DateTimeParseException e) {
+            throw new EclipseException(
+                    "Invalid date format detected in storage file for attribute 'by' in 'deadline' task: " + by,
+                    e
+            );
+        }
     }
 
     private static Event parseEventContent(String eventContent, boolean isDone) throws EclipseException {
@@ -82,6 +92,15 @@ public class StorageParser {
         String from = storedEventMatcher.group("from");
         String to = storedEventMatcher.group("to");
 
-        return new Event(eventDescription, isDone, from, to);
+        try {
+            LocalDate fromDate = LocalDate.parse(from);
+            LocalDate toDate = LocalDate.parse(to);
+            return new Event(eventDescription, isDone, fromDate, toDate);
+        } catch (DateTimeParseException e) {
+            throw new EclipseException(
+                    "Invalid date format detected in the storage file for attribute 'from' or 'to' in 'event' task: " + from + "/" + to,
+                    e
+            );
+        }
     }
 }
