@@ -21,17 +21,17 @@ public class StorageParser {
     /**
      * The regex separator used between different fields in the storage file.
      */
-    private static final String barBetweenSpaces = "\\s\\|\\s";
+    private static final String BAR_BETWEEN_SPACES = "\\s\\|\\s";
 
     /**
      * Pattern for the general task structure: Type | Status | Content.
      * Example: D | 0 | return book | 2024-12-01
      */
     private static final Pattern storageTaskPattern = Pattern.compile(
-            "(?<taskType>[TDE])" // Starting with T/D/E as task type
-                    + barBetweenSpaces
-                    + "(?<isDone>[01])" // 0 or 1
-                    + barBetweenSpaces
+            "(?<taskType>[TDE])"  // Starting with T/D/E as task type
+                    + BAR_BETWEEN_SPACES
+                    + "(?<isDone>[01])"  // 0 or 1
+                    + BAR_BETWEEN_SPACES
                     + "(?<taskContent>.*?)" // return book | June 6th
     );
 
@@ -41,7 +41,7 @@ public class StorageParser {
      */
     private static final Pattern storageDeadlinePattern = Pattern.compile(
             "(?<taskDescription>[^|]*)"
-                    + barBetweenSpaces
+                    + BAR_BETWEEN_SPACES
                     + "(?<by>[^|]*)"
     );
 
@@ -51,7 +51,7 @@ public class StorageParser {
      */
     private static final Pattern storageEventPattern = Pattern.compile(
             "(?<taskDescription>[^|]*)"
-                    + barBetweenSpaces
+                    + BAR_BETWEEN_SPACES
                     + "(?<from>[^|]*)"
                     + "=>"  // Separated by the => signal
                     + "(?<to>[^|]*)"
@@ -102,7 +102,8 @@ public class StorageParser {
         if (!storedDeadlineMatcher.matches()) {
             throw new EclipseException(
                     "eclipse.storage.StorageParser failed to parse this content as eclipse.task.Deadline : \n"
-                            + deadlineContent);
+                            + deadlineContent
+            );
         }
 
         String deadlineDescription = storedDeadlineMatcher.group("taskDescription");

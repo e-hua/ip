@@ -8,8 +8,8 @@ import eclipse.exceptions.EclipseException;
  * including greetings, errors, and task-related notifications.
  */
 public class Ui {
-    private static final String horizontalLine = "____________________________________________________________";
-    private static final String indentSpaces = "    ";
+    private static final String HORIZONTAL_LINE = "____________________________________________________________";
+    private static final String INDENT_SPACES = "    ";
 
     /**
      * Prints a string to the standard out with the standard indentation prefix.
@@ -17,14 +17,14 @@ public class Ui {
      * @param str The string to be printed.
      */
     private void printIndentedLine(String str) {
-        System.out.println(indentSpaces + str);
+        System.out.println(INDENT_SPACES + str);
     }
 
     /**
      * Prints a horizontal line with indentation as separator.
      */
     private void printIndentedHorizontalLine() {
-        this.printIndentedLine(horizontalLine);
+        this.printIndentedLine(HORIZONTAL_LINE);
     }
 
     /**
@@ -67,10 +67,10 @@ public class Ui {
      * @param chatbotName The name of the chatbot to display in the greeting.
      */
     public void greet(String chatbotName) {
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         printIndentedLine("Hello! I'm " + chatbotName);
         printIndentedLine("What can I do for you?");
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         System.out.println();
     }
 
@@ -78,9 +78,9 @@ public class Ui {
      * Displays the exit message when the application exits.
      */
     public void exit() {
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         printIndentedLine("Bye. Hope to see you again soon!");
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         System.out.println();
     }
 }
