@@ -8,6 +8,10 @@ import eclipse.task.Task;
 
 import java.util.Optional;
 
+/**
+ * Handling the interaction with UI, in-memory tasks and the stored task fiel
+ * Represents the chatbot user is interacting with
+ */
 public class Eclipse {
     public final String name = "Eclipse";
 
@@ -15,6 +19,13 @@ public class Eclipse {
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Initializes a new Eclipse chatbot instance.
+     * Sets up the UI, storage, and attempts to load existing tasks from the disk.
+     * If loading fails, an empty task list is initialized instead.
+     *
+     * @param dirPath The relative directory path where task data should be stored/loaded.
+     */
     public Eclipse(String dirPath) {
         this.ui = new Ui();
         this.storage = new Storage(new StorageParser(), dirPath);
@@ -27,18 +38,32 @@ public class Eclipse {
         }
     }
 
+    /**
+     * Saves the current list of tasks to the local storage.
+     *
+     * @throws EclipseException If an error occurs during the saving process.
+     */
     public void saveTasks() throws EclipseException {
         this.storage.storeTasks(this.tasks.getTasks());
     }
 
+    /**
+     * Displays the greeting message via the UI.
+     */
     public void greet() {
         this.ui.greet(this.name);
     }
 
+    /**
+     * Displays the goodbye message via the UI.
+     */
     public void exit() {
         this.ui.exit();
     }
 
+    /**
+     * Display all current tasks to the user in UI.
+     */
     public void list() {
         this.ui.showBorder();
         this.ui.showContent("Here are the tasks in your list:");
@@ -54,6 +79,14 @@ public class Eclipse {
         this.ui.endOutput();
     }
 
+    /**
+     * Adds a new task to the list based on the provided parsed input,
+     * notifies the user via the UI.
+     * Validates that the task description is not blank before adding.
+     *
+     * @param parsedInput The structured representation of the user's add command.
+     * @throws EclipseException If the description is empty or adding fails.
+     */
     public void add(ParsedInput parsedInput) throws EclipseException {
         Task newTask = tasks.add(parsedInput);
         if (newTask.getDescription().trim().isEmpty()) {
@@ -67,6 +100,12 @@ public class Eclipse {
         this.ui.endOutput();
     }
 
+    /**
+     * Removes a task from the list and notifies the user via the UI .
+     *
+     * @param idx The 0-based index of the task to be deleted.
+     * @throws EclipseException If the index is invalid.
+     */
     public void delete(int idx) throws EclipseException {
         Task deletedTask = tasks.delete(idx);
 
@@ -78,6 +117,11 @@ public class Eclipse {
         this.ui.endOutput();
     }
 
+    /**
+     * Marks the specified task as completed.
+     *
+     * @param idx The 0-based index of the task.
+     */
     public void mark(int idx) {
         Optional<Task> maybeTask = this.tasks.getTaskById(idx);
         maybeTask.ifPresent((task) -> {
@@ -89,6 +133,11 @@ public class Eclipse {
         });
     }
 
+    /**
+     * Marks the specified task as incomplete.
+     *
+     * @param idx The 0-based index of the task.
+     */
     public void unmark(int idx) {
         Optional<Task> maybeTask = this.tasks.getTaskById(idx);
         maybeTask.ifPresent((task) -> {
@@ -100,10 +149,20 @@ public class Eclipse {
         });
     }
 
+    /**
+     * Passes a recoverable error to the UI to be displayed to the user.
+     *
+     * @param e The exception containing the error details.
+     */
     public void handleRecoverableError(EclipseException e) {
         this.ui.showRecoverableError(e);
     }
 
+    /**
+     * Returns the number of tasks currently managed by the chatbot.
+     *
+     * @return The size of the task list.
+     */
     public int getNumberOfTasks() {
         return this.tasks.getNumberOfTasks();
     }
