@@ -9,36 +9,54 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Handles the parsing of user input strings into executable {@link ParsedInput} objects.
+ * This class uses <code> regular expressions(Regex) <code/> to
+ * identify commands and extract their parameters.
+ */
 public class Parser {
-    // This regular expression stands for:
 
-    /*
-    \\s*: spaces (zero or more times)
-        (?<command>\\S+): optional non-space command (one or more times)
-    \\s+: spaces (one or more times)
-        (?: A non-captured group
-            \\s+: spaces (one or more times) as prefix
-            (?<params>.*?): optional params, of any character, any length,
-            P.S.
-                Note that here I used ".*?"(the lazy version) instead of ".*"(the greedy version),
-                To prevent any trailing space characters from being included in the arguments
-        )? Which is optional
-    \\s*: spaces (zero or more times)
+    /**
+     * Pattern for initial splitting of input.
+     * Captures the first word as "command" and the rest as "params".
+     * The "params" group uses a lazy quantifier to avoid capturing trailing spaces.
      */
     private static final Pattern inputPattern = Pattern.compile(
-            "\\s*(?<command>\\S+)(?:\\s+(?<params>.*?))?\\s*"
+            "\\s*"     // spaces (zero or more times)
+                    + "(?<command>\\S+)" // optional non-space command (one or more times)
+                    + "(?:" // A non-captured group
+                    + "\\s+" // spaces (one or more times) as prefix
+                    + "(?<params>.*?)" // optional params, of any character, any length(lazy)
+                    + ")?" // This non-captured group is optional
+                    + "\\s*" // spaces (zero or more times)
     );
 
-    // return book /by 2019-10-15
+    /**
+     * Pattern to extract the task description and deadline date.
+     */
     private static final Pattern deadlinePattern = Pattern.compile(
+            // return book /by 2019-10-15
             "(?<subject>.*?)\\s+/by\\s+(?<date>.*?)\\s*"
     );
 
-    // project meeting /from 2019-10-15 /to 2019-10-16
+    /**
+     * Pattern to extract the event description, start date, and end date.
+     */
     private static final Pattern eventPattern = Pattern.compile(
+            // project meeting /from 2019-10-15 /to 2019-10-16
             "(?<subject>.*?)\\s+/from\\s+(?<fromDate>.*?)\\s+/to\\s+(?<toDate>.*?)\\s*"
     );
 
+    /**
+     * Parses the raw user input and converts it into a {@link ParsedInput}.
+     * This method identifies the command type and further parses parameters for
+     * complex tasks like Deadlines and Events.
+     *
+     * @param input The raw string entered by the user.
+     * @return A {@link ParsedInput} object containing the identified command and data.
+     * @throws EclipseException If the input format is invalid or if date strings
+     *                          do not follow the yyyy-mm-dd format.
+     */
     public static ParsedInput parse(String input) throws EclipseException {
         Matcher inputPatternMatcher = inputPattern.matcher(input);
 
@@ -109,6 +127,15 @@ public class Parser {
         };
     }
 
+    /**
+     * Converts a 1-based index string from user input into a 0-based integer.
+     * Validates that the index is a number and falls within the current list boundaries.
+     *
+     * @param inputIndex The string representation of the task number (e.g., "1").
+     * @param chatbot    The {@link Eclipse} instance used to check the current task count.
+     * @return The validated 0-based index as an integer.
+     * @throws EclipseException If the input is not a number or the index is out of bounds.
+     */
     public static int parseListIndex(String inputIndex, Eclipse chatbot) throws EclipseException {
         int inputIndexParsed;
         try {

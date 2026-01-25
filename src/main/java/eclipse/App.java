@@ -6,8 +6,21 @@ import eclipse.parser.Parser;
 
 import java.util.Scanner;
 
+/**
+ * The entry point of the Eclipse chatbot application.
+ * This class initializes the chatbot environment
+ * and manages the main execution loop.
+ */
 public class App {
 
+    /**
+     * Main method that drives the application.
+     * It initializes the {@link Eclipse} object,
+     * and enters a continuous loop to parse user commands
+     * with the static methods from the {@link Parser} class
+     *
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         String dirPath = "./data";
         Eclipse chatbot = new Eclipse(dirPath);
