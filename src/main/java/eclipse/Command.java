@@ -9,5 +9,6 @@ public enum Command {
     EVENT,
     DEADLINE,
     DELETE,
+    FIND,
     INVALID;
 }

@@ -123,6 +123,7 @@ public class Parser {
                     );
                 }
             }
+            case "find" -> new ParsedInput(Command.FIND, maybeParams);
             default -> new ParsedInput(Command.INVALID, maybeParams);
         };
     }

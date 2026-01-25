@@ -58,6 +58,9 @@ public class App {
                     chatbot.delete(Parser.parseListIndex(parsedInput.getParams(), chatbot));
                     chatbot.saveTasks();
                     break;
+                case FIND:
+                    chatbot.find(parsedInput);
+                    break;
                 default:
                     throw new EclipseException("Unknown input command: " + input);
                 }
