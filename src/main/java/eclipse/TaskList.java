@@ -47,13 +47,12 @@ public class TaskList {
 
     public Task delete(int idx) throws EclipseException {
         Optional<Task> maybeTask = getTaskById(idx);
-        Task taskToDelete = maybeTask.orElseThrow
-                (
-                        () -> new EclipseException(
-                                "Given index does not exists in the task list, current task list length: " +
-                                        this.tasks.size()
-                        )
-                );
+        Task taskToDelete = maybeTask.orElseThrow(
+                () -> new EclipseException(
+                        "Given index does not exists in the task list, current task list length: "
+                                + this.tasks.size()
+                )
+        );
         tasks.remove(taskToDelete);
         return taskToDelete;
     }

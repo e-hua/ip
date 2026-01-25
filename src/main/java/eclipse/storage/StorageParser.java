@@ -14,32 +14,32 @@ import java.util.regex.Pattern;
 public class StorageParser {
 
     //
-    private static final String barBetweenSpaces = "\\s\\|\\s";
+    private static final String BAR_BETWEEN_SPACES = "\\s\\|\\s";
 
     // For example
     // D | 0 | return book | June 6th
     private static final Pattern storageTaskPattern = Pattern.compile(
-            "(?<taskType>[TDE])" + // Starting with T/D/E as task type
-                    barBetweenSpaces +
-                    "(?<isDone>[01])" + // 0 or 1
-                    barBetweenSpaces +
-                    "(?<taskContent>.*?)" // return book | June 6th
+            "(?<taskType>[TDE])"  // Starting with T/D/E as task type
+                    + BAR_BETWEEN_SPACES
+                    + "(?<isDone>[01])"  // 0 or 1
+                    + BAR_BETWEEN_SPACES
+                    + "(?<taskContent>.*?)" // return book | June 6th
     );
 
     // return book | June 6th
     private static final Pattern storageDeadlinePattern = Pattern.compile(
-            "(?<taskDescription>[^|]*)" +
-                    barBetweenSpaces +
-                    "(?<by>[^|]*)"
+            "(?<taskDescription>[^|]*)"
+                    + BAR_BETWEEN_SPACES
+                    + "(?<by>[^|]*)"
     );
 
     // project meeting | Aug 6th 2-4pm
     private static final Pattern storageEventPattern = Pattern.compile(
-            "(?<taskDescription>[^|]*)" +
-                    barBetweenSpaces +
-                    "(?<from>[^|]*)" +
-                    "=>" + // Separated by the => signal
-                    "(?<to>[^|]*)"
+            "(?<taskDescription>[^|]*)"
+                    + BAR_BETWEEN_SPACES
+                    + "(?<from>[^|]*)"
+                    + "=>"  // Separated by the => signal
+                    + "(?<to>[^|]*)"
     );
 
     public Task parseStoredLine(String storedLine) throws EclipseException {
@@ -70,7 +70,10 @@ public class StorageParser {
         Matcher storedDeadlineMatcher = storageDeadlinePattern.matcher(deadlineContent);
 
         if (!storedDeadlineMatcher.matches()) {
-            throw new EclipseException("eclipse.storage.StorageParser failed to parse this content as eclipse.task.Deadline : \n" + deadlineContent);
+            throw new EclipseException(
+                    "eclipse.storage.StorageParser failed to parse this content as eclipse.task.Deadline : \n"
+                            + deadlineContent
+            );
         }
 
         String deadlineDescription = storedDeadlineMatcher.group("taskDescription");
@@ -91,7 +94,10 @@ public class StorageParser {
         Matcher storedEventMatcher = storageEventPattern.matcher(eventContent);
 
         if (!storedEventMatcher.matches()) {
-            throw new EclipseException("eclipse.storage.StorageParser failed to parse this content as eclipse.task.Event : \n" + eventContent);
+            throw new EclipseException(
+                    "eclipse.storage.StorageParser failed to parse this content as eclipse.task.Event : \n"
+                            + eventContent
+            );
         }
 
         String eventDescription = storedEventMatcher.group("taskDescription");
@@ -104,7 +110,10 @@ public class StorageParser {
             return new Event(eventDescription, isDone, fromDate, toDate);
         } catch (DateTimeParseException e) {
             throw new EclipseException(
-                    "Invalid date format detected in the storage file for attribute 'from' or 'to' in 'event' task: " + from + "/" + to,
+                    "Invalid date format detected in the storage file for attribute 'from' or 'to' in 'event' task: "
+                            + from
+                            + "/"
+                            + to,
                     e
             );
         }

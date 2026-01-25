@@ -3,15 +3,15 @@ package eclipse;
 import eclipse.exceptions.EclipseException;
 
 public class Ui {
-    private static final String horizontalLine = "____________________________________________________________";
-    private static final String indentSpaces = "    ";
+    private static final String HORIZONTAL_LINE = "____________________________________________________________";
+    private static final String INDENT_SPACES = "    ";
 
     private void printIndentedLine(String str) {
-        System.out.println(indentSpaces + str);
+        System.out.println(INDENT_SPACES + str);
     }
 
     private void printIndentedHorizontalLine() {
-        this.printIndentedLine(horizontalLine);
+        this.printIndentedLine(HORIZONTAL_LINE);
     }
 
     public void showRecoverableError(EclipseException e) {
@@ -33,17 +33,17 @@ public class Ui {
     }
 
     public void greet(String chatbotName) {
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         printIndentedLine("Hello! I'm " + chatbotName);
         printIndentedLine("What can I do for you?");
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         System.out.println();
     }
 
     public void exit() {
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         printIndentedLine("Bye. Hope to see you again soon!");
-        printIndentedLine(horizontalLine);
+        printIndentedLine(HORIZONTAL_LINE);
         System.out.println();
     }
 }

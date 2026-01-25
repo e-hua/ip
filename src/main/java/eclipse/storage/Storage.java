@@ -82,7 +82,7 @@ public class Storage {
         while (s.hasNext()) {
             String currLine = s.nextLine();
 
-            if (currLine.trim().equals("")) {
+            if (currLine.trim().isEmpty()) {
                 continue;
             }
 

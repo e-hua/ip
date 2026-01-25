@@ -9,7 +9,7 @@ import eclipse.task.Task;
 import java.util.Optional;
 
 public class Eclipse {
-    public final String name = "Eclipse";
+    public static final String CHATBOT_NAME = "Eclipse";
 
     private Storage storage;
     private TaskList tasks;
@@ -32,7 +32,7 @@ public class Eclipse {
     }
 
     public void greet() {
-        this.ui.greet(this.name);
+        this.ui.greet(this.CHATBOT_NAME);
     }
 
     public void exit() {
@@ -42,6 +42,7 @@ public class Eclipse {
     public void list() {
         this.ui.showBorder();
         this.ui.showContent("Here are the tasks in your list:");
+
         for (int idx = 0; idx < tasks.getNumberOfTasks(); idx++) {
             Optional<Task> maybeCurrTask = tasks.getTaskById(idx);
             if (maybeCurrTask.isPresent()) {
@@ -50,19 +51,24 @@ public class Eclipse {
                 this.ui.showContent(formattedEntry);
             }
         }
+
         this.ui.showBorder();
         this.ui.endOutput();
     }
 
     public void add(ParsedInput parsedInput) throws EclipseException {
         Task newTask = tasks.add(parsedInput);
+
         if (newTask.getDescription().trim().isEmpty()) {
             throw new EclipseException("Meaningless description: '" + newTask.getDescription() + "'");
         }
+
         this.ui.showBorder();
+
         this.ui.showContent("Got it. I've added this task:");
         this.ui.showContent("  " + newTask);
         this.ui.showContent(String.format("Now you have %d tasks in the list.", this.tasks.getNumberOfTasks()));
+
         this.ui.showBorder();
         this.ui.endOutput();
     }
@@ -71,9 +77,11 @@ public class Eclipse {
         Task deletedTask = tasks.delete(idx);
 
         this.ui.showBorder();
+
         this.ui.showContent("Noted. I've removed this task:");
         this.ui.showContent("  " + deletedTask);
         this.ui.showContent(String.format("Now you have %d tasks in the list.", this.tasks.getNumberOfTasks()));
+
         this.ui.showBorder();
         this.ui.endOutput();
     }
@@ -83,8 +91,10 @@ public class Eclipse {
         maybeTask.ifPresent((task) -> {
             task.markAsDone();
             this.ui.showBorder();
+
             this.ui.showContent("Nice! I've marked this task as done:");
             this.ui.showContent(task.toString());
+
             this.ui.showBorder();
         });
     }
@@ -94,8 +104,10 @@ public class Eclipse {
         maybeTask.ifPresent((task) -> {
             task.markAsNotDone();
             this.ui.showBorder();
+
             this.ui.showContent("OK, I've marked this task as not done yet:");
             this.ui.showContent(task.toString());
+
             this.ui.showBorder();
         });
     }
