@@ -6,6 +6,7 @@ import eclipse.storage.Storage;
 import eclipse.storage.StorageParser;
 import eclipse.task.Task;
 
+import java.util.List;
 import java.util.Optional;
 
 public class Eclipse {
@@ -98,6 +99,28 @@ public class Eclipse {
             this.ui.showContent(task.toString());
             this.ui.showBorder();
         });
+    }
+
+    public void find(ParsedInput parsedInput) throws EclipseException {
+        String keyword = parsedInput.getParams();
+
+        this.ui.showBorder();
+        this.ui.showContent("Here are the matching tasks in your list:");
+        for (int idx = 0; idx < this.tasks.getNumberOfTasks(); idx++) {
+            Optional<Task> maybeCurrTask = this.tasks.getTaskById(idx);
+            if (maybeCurrTask.isEmpty()) {
+                continue;
+            }
+
+            Task currTask = maybeCurrTask.get();
+
+            if (currTask.getDescription().contains(keyword)) {
+                String formattedEntry = String.format("%d. %s", idx + 1, currTask);
+                this.ui.showContent(formattedEntry);
+            }
+        }
+        this.ui.showBorder();
+        this.ui.endOutput();
     }
 
     public void handleRecoverableError(EclipseException e) {
