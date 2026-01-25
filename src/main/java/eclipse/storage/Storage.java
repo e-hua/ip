@@ -13,17 +13,35 @@ import java.util.Scanner;
 import eclipse.exceptions.EclipseException;
 import eclipse.task.Task;
 
+/**
+ * Handles the loading and saving of task data to a local file.
+ * This class manages directory and file creation, as well as storing tasks in the file,
+ * reading lines from the file, parsing them into {@link Task} objects using a {@link StorageParser}.
+ */
 public class Storage {
     private final StorageParser storageParser;
     private final String dirPathString;
     private final File taskStorageFile;
 
+    /**
+     * Constructs a Storage instance with a parser and a directory path.
+     *
+     * @param parser        The {@link StorageParser} used to parse stored task data.
+     * @param dirPathString The relative path to the directory where tasks should be saved.
+     */
     public Storage(StorageParser parser, String dirPathString) {
         this.storageParser = parser;
         this.dirPathString = dirPathString;
         this.taskStorageFile = new File(dirPathString + "/tasks.txt");
     }
 
+    /**
+     * Writes the current list of tasks to the local storage file.
+     * Overwrites any existing content in the file.
+     *
+     * @param tasks The list of {@link Task} objects to be saved.
+     * @throws EclipseException If an I/O error occurs during the file writing process.
+     */
     public void storeTasks(List<Task> tasks) throws EclipseException {
         try {
             taskStorageFile.createNewFile();
@@ -52,6 +70,13 @@ public class Storage {
         }
     }
 
+    /**
+     * Reads tasks from the local storage file and rebuilds the task list.
+     * If the directory or file does not exist, they will be created.
+     *
+     * @return A list of {@link Task} objects loaded from the file.
+     * @throws EclipseException If the file exists but is corrupted, or if I/O errors occur.
+     */
     public List<Task> readTasks() throws EclipseException {
         List<Task> newTasks = new ArrayList<>();
 
