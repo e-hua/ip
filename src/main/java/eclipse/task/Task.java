@@ -1,5 +1,7 @@
 package eclipse.task;
 
+//CHECKSTYLE.OFF: MissingJavadocType
+//CHECKSTYLE.OFF: MissingJavadocMethod
 public class Task {
     private boolean isDone = false;
     private String description;

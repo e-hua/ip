@@ -14,7 +14,7 @@ import eclipse.task.Task;
 import eclipse.task.Todo;
 
 public class StorageParserTest {
-    StorageParser storageParser = new StorageParser();
+    private StorageParser storageParser = new StorageParser();
 
     @Test
     public void parseStoredLine_parseInvalidLine_exceptionThrown() {
@@ -88,7 +88,10 @@ public class StorageParserTest {
         String storedValidEventLine = " \n E | 0 | return book | 2026-01-24=>2026-01-25\n";
 
         Task parsedTodo = storageParser.parseStoredLine(storedValidEventLine);
-        Event expectedEvent = new Event("return book", false, LocalDate.parse("2026-01-24"), LocalDate.parse("2026-01-25"));
+        Event expectedEvent = new Event("return book", false,
+                LocalDate.parse("2026-01-24"),
+                LocalDate.parse("2026-01-25")
+        );
         assertEquals(parsedTodo.toString(), expectedEvent.toString());
         assertEquals(parsedTodo.toStorageString(), expectedEvent.toStorageString());
         assertEquals(parsedTodo.toStorageString(), storedValidEventLine.trim());
@@ -103,7 +106,8 @@ public class StorageParserTest {
             fail();
         } catch (EclipseException e) {
             assertEquals(
-                    "Invalid date format detected in the storage file for attribute 'from' or 'to' in 'event' task: 2026-01-240/2026-01-25",
+                    "Invalid date format detected in the storage file "
+                            + "for attribute 'from' or 'to' in 'event' task: 2026-01-240/2026-01-25",
                     e.getMessage()
             );
         }

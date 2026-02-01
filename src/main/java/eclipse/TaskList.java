@@ -56,6 +56,7 @@ public class TaskList {
      */
     public Task add(ParsedInput parsedInput) throws EclipseException {
         Task newTask = switch (parsedInput.getCommand()) {
+            //CHECKSTYLE.OFF: Indentation
             case TODO -> new Todo(parsedInput.getParams());
             case DEADLINE -> new Deadline(
                     parsedInput.getParams(),
@@ -67,6 +68,7 @@ public class TaskList {
                     parsedInput.getTo()
             );
             default -> throw new EclipseException("Invalid parsed input, cannot be added as task" + parsedInput);
+            //CHECKSTYLE.ON: Indentation
         };
 
         tasks.add(newTask);
@@ -82,8 +84,7 @@ public class TaskList {
      */
     public Task delete(int idx) throws EclipseException {
         Optional<Task> maybeTask = getTaskById(idx);
-        Task taskToDelete = maybeTask.orElseThrow(
-                () -> new EclipseException(
+        Task taskToDelete = maybeTask.orElseThrow(() -> new EclipseException(
                         "Given index does not exists in the task list, current task list length: "
                                 + this.tasks.size()
                 )

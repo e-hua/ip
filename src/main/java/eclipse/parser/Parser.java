@@ -1,17 +1,18 @@
 package eclipse.parser;
 
-import eclipse.exceptions.EclipseException;
-import eclipse.*;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import eclipse.Command;
+import eclipse.Eclipse;
+import eclipse.exceptions.EclipseException;
+
 /**
  * Handles the parsing of user input strings into executable {@link ParsedInput} objects.
- * This class uses <code> regular expressions(Regex) <code/> to
+ * This class uses <code> regular expressions(Regex) </code> to
  * identify commands and extract their parameters.
  */
 public class Parser {
@@ -22,7 +23,7 @@ public class Parser {
      * The "params" group uses a lazy quantifier to avoid capturing trailing spaces.
      */
     private static final Pattern inputPattern = Pattern.compile(
-            "\\s*"     // spaces (zero or more times)
+            "\\s*" // spaces (zero or more times)
                     + "(?<command>\\S+)" // optional non-space command (one or more times)
                     + "(?:" // A non-captured group
                     + "\\s+" // spaces (one or more times) as prefix
@@ -68,6 +69,7 @@ public class Parser {
         Optional<String> maybeParams = Optional.ofNullable(inputPatternMatcher.group("params"));
 
         return switch (commandStr) {
+            //CHECKSTYLE.OFF: Indentation
             case "bye" -> new ParsedInput(Command.BYE, maybeParams);
             case "list" -> new ParsedInput(Command.LIST, maybeParams);
             case "mark" -> new ParsedInput(Command.MARK, maybeParams);
@@ -125,6 +127,7 @@ public class Parser {
             }
             case "find" -> new ParsedInput(Command.FIND, maybeParams);
             default -> new ParsedInput(Command.INVALID, maybeParams);
+            //CHECKSTYLE.ON: Indentation
         };
     }
 
@@ -150,7 +153,10 @@ public class Parser {
 
         if (inputIndexParsed <= 0 || inputIndexParsed > chatbot.getNumberOfTasks()) {
             throw new EclipseException(
-                    String.format("Index %s not in the list, length of the list: %d", inputIndex, chatbot.getNumberOfTasks())
+                    String.format("Index %s not in the list, length of the list: %d",
+                            inputIndex,
+                            chatbot.getNumberOfTasks()
+                    )
             );
         }
 

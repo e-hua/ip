@@ -1,13 +1,12 @@
 package eclipse;
 
+import java.util.Optional;
+
 import eclipse.exceptions.EclipseException;
 import eclipse.parser.ParsedInput;
 import eclipse.storage.Storage;
 import eclipse.storage.StorageParser;
 import eclipse.task.Task;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * Handling the interaction with UI, in-memory tasks and the stored task fiel
@@ -162,6 +161,7 @@ public class Eclipse {
         });
     }
 
+    //CHECKSTYLE.OFF: MissingJavadocMethod
     public void find(ParsedInput parsedInput) throws EclipseException {
         String keyword = parsedInput.getParams();
 
@@ -183,6 +183,7 @@ public class Eclipse {
         this.ui.showBorder();
         this.ui.endOutput();
     }
+    //CHECKSTYLE.ON: MissingJavadocMethod
 
     /**
      * Passes a recoverable error to the UI to be displayed to the user.

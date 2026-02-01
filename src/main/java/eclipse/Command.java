@@ -1,5 +1,6 @@
 package eclipse;
 
+//CHECKSTYLE.OFF: MissingJavadocType
 public enum Command {
     BYE,
     LIST,

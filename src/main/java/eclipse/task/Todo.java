@@ -1,5 +1,7 @@
 package eclipse.task;
 
+//CHECKSTYLE.OFF: MissingJavadocType
+//CHECKSTYLE.OFF: MissingJavadocMethod
 public class Todo extends Task {
 
     public Todo(String description) {

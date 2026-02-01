@@ -1,10 +1,10 @@
 package eclipse.parser;
 
-import eclipse.exceptions.EclipseException;
-import eclipse.Command;
-
 import java.time.LocalDate;
 import java.util.Optional;
+
+import eclipse.Command;
+import eclipse.exceptions.EclipseException;
 
 /**
  * Encapsulates the results of parsing a user command.
