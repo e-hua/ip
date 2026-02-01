@@ -1,10 +1,10 @@
 package eclipse;
 
+import java.util.Scanner;
+
 import eclipse.exceptions.EclipseException;
 import eclipse.parser.ParsedInput;
 import eclipse.parser.Parser;
-
-import java.util.Scanner;
 
 /**
  * The entry point of the Eclipse chatbot application.

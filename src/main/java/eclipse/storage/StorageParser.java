@@ -1,15 +1,15 @@
 package eclipse.storage;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import eclipse.exceptions.EclipseException;
 import eclipse.task.Deadline;
 import eclipse.task.Event;
 import eclipse.task.Task;
 import eclipse.task.Todo;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Parses raw strings from the storage file into {@link Task} objects.
@@ -28,9 +28,9 @@ public class StorageParser {
      * Example: D | 0 | return book | 2024-12-01
      */
     private static final Pattern storageTaskPattern = Pattern.compile(
-            "(?<taskType>[TDE])"  // Starting with T/D/E as task type
+            "(?<taskType>[TDE])" // Starting with T/D/E as task type
                     + BAR_BETWEEN_SPACES
-                    + "(?<isDone>[01])"  // 0 or 1
+                    + "(?<isDone>[01])" // 0 or 1
                     + BAR_BETWEEN_SPACES
                     + "(?<taskContent>.*?)" // return book | June 6th
     );
@@ -53,7 +53,7 @@ public class StorageParser {
             "(?<taskDescription>[^|]*)"
                     + BAR_BETWEEN_SPACES
                     + "(?<from>[^|]*)"
-                    + "=>"  // Separated by the => signal
+                    + "=>" // Separated by the => signal
                     + "(?<to>[^|]*)"
     );
 
@@ -82,9 +82,11 @@ public class StorageParser {
         String taskContent = storedTaskMatcher.group("taskContent");
 
         return switch (taskType) {
+            //CHECKSTYLE.OFF: Indentation
             case "T" -> new Todo(taskContent, isDone);
             case "D" -> parseDeadlineContent(taskContent, isDone);
             default -> parseEventContent(taskContent, isDone);
+            //CHECKSTYLE.ON: Indentation
         };
     }
 

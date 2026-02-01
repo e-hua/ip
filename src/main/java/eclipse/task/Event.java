@@ -3,6 +3,8 @@ package eclipse.task;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+//CHECKSTYLE.OFF: MissingJavadocType
+//CHECKSTYLE.OFF: MissingJavadocMethod
 public class Event extends Task {
     protected LocalDate from;
     protected LocalDate to;
