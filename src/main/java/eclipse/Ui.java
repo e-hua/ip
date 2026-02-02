@@ -66,21 +66,24 @@ public class Ui {
      *
      * @param chatbotName The name of the chatbot to display in the greeting.
      */
-    public void greet(String chatbotName) {
+    public String greet(String chatbotName) {
         printIndentedLine(HORIZONTAL_LINE);
         printIndentedLine("Hello! I'm " + chatbotName);
         printIndentedLine("What can I do for you?");
         printIndentedLine(HORIZONTAL_LINE);
         System.out.println();
+        return "Hello! I'm " + chatbotName + "\n" + "What can I do for you?";
     }
 
     /**
      * Displays the exit message when the application exits.
      */
-    public void exit() {
+    public String exit() {
+        String message = "Bye. Hope to see you again soon!";
         printIndentedLine(HORIZONTAL_LINE);
-        printIndentedLine("Bye. Hope to see you again soon!");
+        printIndentedLine(message);
         printIndentedLine(HORIZONTAL_LINE);
         System.out.println();
+        return message;
     }
 }

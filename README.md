@@ -36,4 +36,6 @@ Delete the `build/` folder: `./gradlew clean`
 Compile all files(Build): `./gradlew build`
 Run the application: `./gradlew run --console=plain`
 Build create a fat JAR file of the application: `./gradlew clean shadowJar`
+Run the jar built: `java -jar build/libs/Eclipse.jar`
 Run JUnit testing: `./gradlew test`
+Run Linting: `./gradlew checkstyleMain checkstyleTest `
