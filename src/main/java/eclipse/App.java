@@ -21,7 +21,7 @@ public class App {
      *
      * @param args Command line arguments (not used).
      */
-    public static void main(String[] args) {
+    public static void main(String... args) {
         String dirPath = "./data";
         Eclipse chatbot = new Eclipse(dirPath);
 
