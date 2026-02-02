@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import eclipse.exceptions.EclipseException;
 import eclipse.parser.ParsedInput;
+import eclipse.parser.Parser;
 import eclipse.storage.Storage;
 import eclipse.storage.StorageParser;
 import eclipse.task.Task;
@@ -50,21 +51,23 @@ public class Eclipse {
     /**
      * Displays the greeting message via the UI.
      */
-    public void greet() {
-        this.ui.greet(this.CHATBOT_NAME);
+    public String greet() {
+        return this.ui.greet(this.CHATBOT_NAME);
     }
 
     /**
      * Displays the goodbye message via the UI.
      */
-    public void exit() {
-        this.ui.exit();
+    public String exit() {
+        return this.ui.exit();
     }
 
     /**
      * Display all current tasks to the user in UI.
      */
-    public void list() {
+    public String list() {
+        StringBuilder listContent = new StringBuilder();
+
         this.ui.showBorder();
         this.ui.showContent("Here are the tasks in your list:");
 
@@ -74,11 +77,14 @@ public class Eclipse {
                 Task currTask = maybeCurrTask.get();
                 String formattedEntry = String.format("%d. %s", idx + 1, currTask);
                 this.ui.showContent(formattedEntry);
+
+                listContent.append(formattedEntry).append("\n");
             }
         }
 
         this.ui.showBorder();
         this.ui.endOutput();
+        return listContent.toString().trim();
     }
 
     /**
@@ -89,7 +95,7 @@ public class Eclipse {
      * @param parsedInput The structured representation of the user's add command.
      * @throws EclipseException If the description is empty or adding fails.
      */
-    public void add(ParsedInput parsedInput) throws EclipseException {
+    public String add(ParsedInput parsedInput) throws EclipseException {
         Task newTask = tasks.add(parsedInput);
 
         if (newTask.getDescription().trim().isEmpty()) {
@@ -104,6 +110,10 @@ public class Eclipse {
 
         this.ui.showBorder();
         this.ui.endOutput();
+
+        return "Got it. I've added this task: \n"
+                + "  " + newTask + "\n"
+                + String.format("Now you have %d tasks in the list.", this.tasks.getNumberOfTasks());
     }
 
     /**
@@ -112,7 +122,7 @@ public class Eclipse {
      * @param idx The 0-based index of the task to be deleted.
      * @throws EclipseException If the index is invalid.
      */
-    public void delete(int idx) throws EclipseException {
+    public String delete(int idx) throws EclipseException {
         Task deletedTask = tasks.delete(idx);
 
         this.ui.showBorder();
@@ -123,6 +133,10 @@ public class Eclipse {
 
         this.ui.showBorder();
         this.ui.endOutput();
+
+        return "Noted. I've removed this task: \n"
+                + "  " + deletedTask + "\n"
+                + String.format("Now you have %d tasks in the list.", this.tasks.getNumberOfTasks());
     }
 
     /**
@@ -130,8 +144,10 @@ public class Eclipse {
      *
      * @param idx The 0-based index of the task.
      */
-    public void mark(int idx) {
+    public String mark(int idx) throws EclipseException {
         Optional<Task> maybeTask = this.tasks.getTaskById(idx);
+        maybeTask.orElseThrow(() -> new EclipseException("No task to be marked"));
+
         maybeTask.ifPresent((task) -> {
             task.markAsDone();
             this.ui.showBorder();
@@ -141,6 +157,8 @@ public class Eclipse {
 
             this.ui.showBorder();
         });
+
+        return "Nice! I've marked this task as done:\n" + maybeTask.get();
     }
 
     /**
@@ -148,8 +166,10 @@ public class Eclipse {
      *
      * @param idx The 0-based index of the task.
      */
-    public void unmark(int idx) {
+    public String unmark(int idx) throws EclipseException {
         Optional<Task> maybeTask = this.tasks.getTaskById(idx);
+        maybeTask.orElseThrow(() -> new EclipseException("No task to be unmarked"));
+
         maybeTask.ifPresent((task) -> {
             task.markAsNotDone();
             this.ui.showBorder();
@@ -159,10 +179,14 @@ public class Eclipse {
 
             this.ui.showBorder();
         });
+
+        return "OK, I've marked this task as not done yet:\n" + maybeTask.get();
     }
 
     //CHECKSTYLE.OFF: MissingJavadocMethod
-    public void find(ParsedInput parsedInput) throws EclipseException {
+    public String find(ParsedInput parsedInput) throws EclipseException {
+        StringBuilder foundTasks = new StringBuilder();
+
         String keyword = parsedInput.getParams();
 
         this.ui.showBorder();
@@ -178,10 +202,14 @@ public class Eclipse {
             if (currTask.getDescription().contains(keyword)) {
                 String formattedEntry = String.format("%d. %s", idx + 1, currTask);
                 this.ui.showContent(formattedEntry);
+
+                foundTasks.append(formattedEntry).append("\n");
             }
         }
         this.ui.showBorder();
         this.ui.endOutput();
+
+        return foundTasks.toString().trim();
     }
     //CHECKSTYLE.ON: MissingJavadocMethod
 
@@ -190,8 +218,9 @@ public class Eclipse {
      *
      * @param e The exception containing the error details.
      */
-    public void handleRecoverableError(EclipseException e) {
+    public String handleRecoverableError(EclipseException e) {
         this.ui.showRecoverableError(e);
+        return e.getMessage();
     }
 
     /**
@@ -201,5 +230,49 @@ public class Eclipse {
      */
     public int getNumberOfTasks() {
         return this.tasks.getNumberOfTasks();
+    }
+
+
+    public String getResponse(String input) {
+        String message;
+        try {
+            ParsedInput parsedInput = Parser.parse(input);
+            switch (parsedInput.getCommand()) {
+            case BYE:
+                message = this.exit();
+                break;
+            case LIST:
+                message = this.list();
+                break;
+            case MARK:
+                message = this.mark(Parser.parseListIndex(parsedInput.getParams(), this));
+
+                this.saveTasks();
+                break;
+            case UNMARK:
+                message = this.unmark(Parser.parseListIndex(parsedInput.getParams(), this));
+
+                this.saveTasks();
+                break;
+            case EVENT, DEADLINE, TODO:
+                message = this.add(parsedInput);
+
+                this.saveTasks();
+                break;
+            case DELETE:
+                message = this.delete(Parser.parseListIndex(parsedInput.getParams(), this));
+
+                this.saveTasks();
+                break;
+            case FIND:
+                message = this.find(parsedInput);
+                break;
+            default:
+                throw new EclipseException("Unknown input command: " + input);
+            }
+        } catch (EclipseException e) {
+            message = this.handleRecoverableError(e);
+        }
+        return message;
     }
 }
