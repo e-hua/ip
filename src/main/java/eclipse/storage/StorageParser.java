@@ -85,7 +85,10 @@ public class StorageParser {
             //CHECKSTYLE.OFF: Indentation
             case "T" -> new Todo(taskContent, isDone);
             case "D" -> parseDeadlineContent(taskContent, isDone);
-            default -> parseEventContent(taskContent, isDone);
+            default -> {
+                assert taskType.equals("E") : "The only possible type left is 'E'(event)";
+                yield parseEventContent(taskContent, isDone);
+            }
             //CHECKSTYLE.ON: Indentation
         };
     }
