@@ -205,8 +205,7 @@ public class Eclipse {
                                     String formattedEntry = String.format("%d. %s", idx + 1, task);
                                     this.ui.showContent(formattedEntry);
                                     foundTasks.append(formattedEntry).append("\n");
-                                })
-                );
+                                }));
 
         this.ui.showBorder();
         this.ui.endOutput();
