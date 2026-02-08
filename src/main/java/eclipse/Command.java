@@ -11,5 +11,6 @@ public enum Command {
     DEADLINE,
     DELETE,
     FIND,
+    STATISTICS,
     INVALID;
 }

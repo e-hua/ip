@@ -212,6 +212,11 @@ public class Eclipse {
 
         return foundTasks.toString().trim();
     }
+
+    public String stats() {
+        return String.format("There are %d tasks in total", this.tasks.getNumberOfTasks());
+    }
+
     //CHECKSTYLE.ON: MissingJavadocMethod
 
     /**
@@ -267,6 +272,9 @@ public class Eclipse {
                 break;
             case FIND:
                 message = this.find(parsedInput);
+                break;
+            case STATISTICS:
+                message = this.stats();
                 break;
             default:
                 throw new EclipseException("Unknown input command: " + input);
