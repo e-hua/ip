@@ -11,8 +11,8 @@ import javafx.stage.Stage;
 
 //CHECKSTYLE.OFF: MissingJavadocType
 public class Main extends Application {
-    private final static String DATA_DIR_PATH = "./data";
-    private final static String MAIN_WINDOW_FXML_PATH = "/view/MainWindow.fxml";
+    private static final String DATA_DIR_PATH = "./data";
+    private static final String MAIN_WINDOW_FXML_PATH = "/view/MainWindow.fxml";
 
     private final Eclipse chatbot = new Eclipse(DATA_DIR_PATH);
 
