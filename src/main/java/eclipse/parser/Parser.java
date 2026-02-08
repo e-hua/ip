@@ -126,6 +126,7 @@ public class Parser {
                 }
             }
             case "find" -> new ParsedInput(Command.FIND, maybeParams);
+            case "stats" -> new ParsedInput(Command.STATISTICS, maybeParams);
             default -> new ParsedInput(Command.INVALID, maybeParams);
             //CHECKSTYLE.ON: Indentation
         };
