@@ -1,6 +1,7 @@
 package eclipse;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 import eclipse.exceptions.EclipseException;
 import eclipse.parser.ParsedInput;
@@ -191,21 +192,22 @@ public class Eclipse {
 
         this.ui.showBorder();
         this.ui.showContent("Here are the matching tasks in your list:");
-        for (int idx = 0; idx < this.tasks.getNumberOfTasks(); idx++) {
-            Optional<Task> maybeCurrTask = this.tasks.getTaskById(idx);
-            if (maybeCurrTask.isEmpty()) {
-                continue;
-            }
 
-            Task currTask = maybeCurrTask.get();
+        IntStream.range(0, this.tasks.getNumberOfTasks())
+                .filter((idx) ->
+                        this.tasks.getTaskById(idx)
+                                .filter((task) -> task.getDescription().contains(keyword))
+                                .isPresent()
+                )
+                .forEach((idx) ->
+                        this.tasks.getTaskById(idx)
+                                .ifPresent(task -> {
+                                    String formattedEntry = String.format("%d. %s", idx + 1, task);
+                                    this.ui.showContent(formattedEntry);
+                                    foundTasks.append(formattedEntry).append("\n");
+                                })
+                );
 
-            if (currTask.getDescription().contains(keyword)) {
-                String formattedEntry = String.format("%d. %s", idx + 1, currTask);
-                this.ui.showContent(formattedEntry);
-
-                foundTasks.append(formattedEntry).append("\n");
-            }
-        }
         this.ui.showBorder();
         this.ui.endOutput();
 
