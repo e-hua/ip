@@ -11,13 +11,15 @@ import javafx.stage.Stage;
 
 //CHECKSTYLE.OFF: MissingJavadocType
 public class Main extends Application {
-    private String dirPath = "./data";
-    private Eclipse chatbot = new Eclipse(dirPath);
+    private final static String DATA_DIR_PATH = "./data";
+    private final static String MAIN_WINDOW_FXML_PATH = "/view/MainWindow.fxml";
+
+    private final Eclipse chatbot = new Eclipse(DATA_DIR_PATH);
 
     @Override
     public void start(Stage stage) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource(MAIN_WINDOW_FXML_PATH));
             AnchorPane ap = fxmlLoader.load();
 
             Scene scene = new Scene(ap);
